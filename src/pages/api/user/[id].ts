@@ -1,5 +1,5 @@
 import { NextApiHandler } from "next";
-import data from "../../../lib/data.json";
+import data from "../../../../lib/data.json";
 
 const user: NextApiHandler = (req, res) => {
   const { id } = req.query;

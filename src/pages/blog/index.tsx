@@ -35,7 +35,7 @@ const BlogIndexPage: NextPage<{
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const blogs = (await import("../../lib/blogs.json")).default;
+  const blogs = (await import("../../../lib/blogs.json")).default;
   return {
     props: { blogs }
   };

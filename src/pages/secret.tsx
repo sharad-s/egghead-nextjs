@@ -9,7 +9,7 @@ import {
   Code,
 } from "@chakra-ui/core";
 import { GetServerSideProps, NextPage } from "next";
-import auth0 from "../lib/auth0";
+import auth0 from "../../lib/auth0";
 
 const SecretPage: NextPage<{
   username?: string;

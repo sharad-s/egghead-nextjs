@@ -17,3 +17,32 @@ In this lesson, we'll set up the API routes Auth0 needs to handle the auth proce
 
 After this lesson, you will understand how to implement the user authentication logic in a Next.js app with Auth0.
 
+
+
+ACCOUNT:
+
+KEY:
+b6jslyxio5hrdeunkvdvtshda7a
+
+SECRET: 
+b6jslyxio5hrdeunkvdvtshda7a
+
+
+USER GROUP 
+
+ KEY                          
+ bdesvznnhmwg366pbmqxorqmchq
+
+ SECRET                                    
+  bb35hh7bdano253ijv4rhi3sda7y57g5ep4atqqa   
+
+
+
+USER GROUP 
+
+ KEY                          
+
+  bv5zly46su6kkbyde6chfbmr3zq
+ SECRET                                    
+
+  bkk2ht3db6uo5chnhepub5ke2b2sstv37say3ila

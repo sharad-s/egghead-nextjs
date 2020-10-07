@@ -20,7 +20,7 @@ const BlogPage: NextPage<{
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const blogs = (await import("../../lib/blogs.json")).default;
+  const blogs = (await import("../../../lib/blogs.json")).default;
   const slugs = blogs.map(blog => blog.slug);
   const paths = slugs.map(slug => ({ params: { slug } }));
 
@@ -33,7 +33,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({
   params: { slug }
 }) => {
-  const blogs = (await import("../../lib/blogs.json")).default;
+  const blogs = (await import("../../../lib/blogs.json")).default;
   const blog = blogs.find(x => x.slug === slug);
 
   return {
