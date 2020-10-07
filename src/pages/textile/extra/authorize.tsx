@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react"
 
 import NextLink from "next/link";
@@ -8,20 +7,29 @@ import {
   Flex,
   Text,
   Stack,
-  Box
+  Box 
 } from "@chakra-ui/core";
 
-// https://textileio.github.io/js-textile/docs/hub.client
-import { getIdentity, setupDB } from '../../utils/textile'
+// Textile
+import { authorize, getIdentity, keyInfo} from '../../../utils/textile'
 
 const AboutPage = () => {
 
+  const [client, setClient] = useState({})
+
   useEffect(() => {
+    console.log("loaded.")
     getIdentity()
       .then(identity => {
         console.log({ identity })
+        return authorize(keyInfo, identity)
+      })
+      .then(client => {
+        setClient(client)
+        console.log({ client })
       })
   }, [])
+
 
   return (
     <Box>

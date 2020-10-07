@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/core";
 
 // Textile
-import { getIdentity, sign } from '../../utils/textile';
+import { getIdentity, sign } from '../../../utils/textile';
 
 const AboutPage = () => {
 

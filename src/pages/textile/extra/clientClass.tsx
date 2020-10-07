@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react"
 
 import NextLink from "next/link";
@@ -10,19 +11,16 @@ import {
   Box
 } from "@chakra-ui/core";
 
-// Textile
-import { getIdentity } from '../../utils/textile'
+// https://textileio.github.io/js-textile/docs/hub.client
+import { getIdentity, setupDB } from '../../../utils/textile'
 
 const AboutPage = () => {
 
-  const [identity, setIdentity] = useState({})
-
   useEffect(() => {
-    console.log("loaded.")
-    getIdentity().then(identity => {
-      console.log({ identity }, identity.toString())
-      setIdentity(identity)
-    })
+    getIdentity()
+      .then(identity => {
+        console.log({ identity })
+      })
   }, [])
 
   return (
@@ -39,10 +37,11 @@ const AboutPage = () => {
       >
         <Heading as="h1" size="xl" marginY="2rem">
           Textile
-        </Heading>  
-        <Text>
-          Identity: {identity.toString()}
-        </Text>
+        </Heading>
+
+        <Heading as="h2" size="xl" marginY="2rem">
+          Signing Txs
+        </Heading>
 
       </Flex>
     </Box>

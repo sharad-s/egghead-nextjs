@@ -21,6 +21,20 @@ export const authorize = async (
 }
 
 
+export const createNewIdentity = async (): Promise<PrivateKey> => {
+  /** No cached identity existed, so create a new one */
+  const identity = await PrivateKey.fromRandom()
+
+  console.log('YOOO',{identity})
+
+
+  /** Add the string copy to the cache */
+  localStorage.setItem("identity", identity.toString())
+/** Return the random identity */
+  
+  return identity
+}
+
 export const getIdentity = async (): Promise<PrivateKey> => {
   /** Restore any cached user identity first */
   const cached = localStorage.getItem("identity")
@@ -28,12 +42,10 @@ export const getIdentity = async (): Promise<PrivateKey> => {
     /** Convert the cached identity string to a PrivateKey and return */
     return PrivateKey.fromString(cached)
   }
-  /** No cached identity existed, so create a new one */
-  const identity = await PrivateKey.fromRandom()
-  /** Add the string copy to the cache */
-  localStorage.setItem("identity", identity.toString())
-  /** Return the random identity */
-  return identity
+
+  // Create a new PrivateKey
+  return await createNewIdentity();
+
 }
 
 
@@ -101,11 +113,11 @@ export const getUserAuth = async (keyInfo: KeyInfo) => {
   const expiration = new Date(Date.now() + 60 * 1000)
 
   try {
-    const userAuth: UserAuth = await createUserAuth(keyInfo.key, keyInfo.secret ?? '' , expiration)
+    const userAuth: UserAuth = await createUserAuth(keyInfo.key, keyInfo.secret ?? '', expiration)
     // Generate a new UserAuth
     return userAuth
   } catch (err) {
-      throw err
+    throw err
   }
 
 }

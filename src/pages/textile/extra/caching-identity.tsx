@@ -7,29 +7,23 @@ import {
   Flex,
   Text,
   Stack,
-  Box 
+  Box
 } from "@chakra-ui/core";
 
 // Textile
-import { authorize, getIdentity, keyInfo} from '../../utils/textile'
+import { getIdentity } from '../../../utils/textile'
 
 const AboutPage = () => {
 
-  const [client, setClient] = useState({})
+  const [identity, setIdentity] = useState({})
 
   useEffect(() => {
     console.log("loaded.")
-    getIdentity()
-      .then(identity => {
-        console.log({ identity })
-        return authorize(keyInfo, identity)
-      })
-      .then(client => {
-        setClient(client)
-        console.log({ client })
-      })
+    getIdentity().then(identity => {
+      console.log({ identity }, identity.toString())
+      setIdentity(identity)
+    })
   }, [])
-
 
   return (
     <Box>
@@ -45,11 +39,10 @@ const AboutPage = () => {
       >
         <Heading as="h1" size="xl" marginY="2rem">
           Textile
-        </Heading>
-
-        <Heading as="h2" size="xl" marginY="2rem">
-          Signing Txs
-        </Heading>
+        </Heading>  
+        <Text>
+          Identity: {identity.toString()}
+        </Text>
 
       </Flex>
     </Box>
