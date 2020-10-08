@@ -25,13 +25,13 @@ export const createNewIdentity = async (): Promise<PrivateKey> => {
   /** No cached identity existed, so create a new one */
   const identity = await PrivateKey.fromRandom()
 
-  console.log('YOOO',{identity})
+  console.log('YOOO', { identity })
 
 
   /** Add the string copy to the cache */
   localStorage.setItem("identity", identity.toString())
-/** Return the random identity */
-  
+  /** Return the random identity */
+
   return identity
 }
 
@@ -100,7 +100,6 @@ export const newToken = async (client: Client, privateKey: PrivateKey) => {
   return token
 }
 
-
 // Constant KeyInfo
 export const keyInfo: KeyInfo = {
   key: 'bdesvznnhmwg366pbmqxorqmchq',
@@ -158,14 +157,84 @@ export const setupDB2 = async (privateKey: PrivateKey) => {
 
 
 // Once you have the Client, you can run these for threads
-
-
 export const listThreads = async (client: Client) => {
   const threads = await client.listThreads()
   return threads
 }
 
+
+// Maps over an object of threads that we get from listThreads
+// And adds more data.
+export const createBetterThreadsArray = async (client, threads) => {
+
+  const betterThreads = await Promise.all(
+    threads.map(async ({ id }) => {
+
+      const threadID = ThreadID.fromString(id)
+
+      // For each thread, we have to create a Collection 
+      const collections = await createCollectionInDB(client, threadID)
+
+      const out = {
+        id,
+        collections
+      }
+
+      return out;
+    })
+  )
+
+  return betterThreads
+}
+
+// Creates a DB in a Thread
+// 1 Thread = 1 DB
 export const createDB = async (client: Client) => {
-  const thread: ThreadID = await client.newDB()
+  const thread: ThreadID = await client.newDB(undefined, 'poopDB')
   return thread
+}
+
+// Creates a collection in DB if it doesn't exist 
+export const createCollectionInDB = async (
+  client,
+  threadID,
+  collectionName = "PEEPEE"
+) => {
+  try {
+
+    let collections = await client.listCollections(threadID)
+
+    const hasCollection = !!Object.keys(
+      collections.filter(({ name }) => name === collectionName)
+    ).length
+
+    // If Collection doesn't exist, create it
+    if (!hasCollection) await client.newCollection(threadID, { name: collectionName });
+
+    // Query it again
+    collections = await client.listCollections(threadID)
+
+    console.log({ collections })
+
+    return collections
+  } catch (err) {
+    console.error(err)
+  }
+
+}
+
+
+// List all documents in a collection
+export const fetchCollection = async (client, threadID, name) => {
+  const found = await client.find(threadID, name, {})
+  return found
+}
+
+
+// Add Document to collection
+export const addDocument = async (client, threadID, collectionName, document) => {
+  console.log({ client, threadID, collectionName, document })
+  const res = await client.create(threadID, collectionName, [document])
+  console.log({ res })
+  return res
 }
