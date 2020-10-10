@@ -12,17 +12,14 @@ import {
     Input
 } from "@chakra-ui/core";
 
-import { loginAndSetupDB } from '../../../utils/setup'
+import { loginAndSetupDB } from '../../utils/setup'
 
 import {
     fetchCollection,
     addDocument,
-} from '../../../utils/api'
+} from '../../utils/api'
 
-
-import { ThreadID } from "@textile/hub";
-
-const AboutPage = () => {
+const TextilePage = () => {
 
     const [privKey, setPrivKey] = useState('')
     const [client, setClient] = useState({})
@@ -204,4 +201,4 @@ const AboutPage = () => {
     );
 };
 
-export default AboutPage;
+export default TextilePage;
