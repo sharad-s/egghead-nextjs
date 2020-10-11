@@ -29,7 +29,23 @@ export const newToken = async (client, privateKey) => {
 }
 
 
-// Identity
+/* 
+ * Creates a new identity and caches it .
+ */
+const createNewIdentity = async () => {
+    /** No cached identity existed, so create a new one */
+    const identity = await PrivateKey.fromRandom()
+
+    /** Add the string copy to the cache */
+    localStorage.setItem("identity", identity.toString())
+
+    /** Return the random identity */
+    return identity
+}
+
+/* 
+ * Looks for cached identity. If none, creates a new identity.
+ */
 const getExistingIdentity = async () => {
     /** Restore any cached user identity first */
     const cached = localStorage.getItem("identity")
@@ -41,19 +57,17 @@ const getExistingIdentity = async () => {
 
     // Else, create a new PrivateKey
     return await createNewIdentity();
-
 }
 
-const createNewIdentity = async () => {
-    /** No cached identity existed, so create a new one */
-    const identity = await PrivateKey.fromRandom()
 
-    /** Add the string copy to the cache */
-    localStorage.setItem("identity", identity.toString())
-
-    /** Return the random identity */
-    return identity
-}
+// Sign Transactions with your PrivateKey
+export const sign = async (identity) => {
+    const challenge = Buffer.from('Sign this string');
+  
+    const credentials = identity.sign(challenge);
+  
+    return credentials
+  }
 
 export const getIdentity = getExistingIdentity;
 export const createIdentity = createNewIdentity;
