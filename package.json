@@ -10,6 +10,8 @@
     "export": "next export"
   },
   "dependencies": {
+    "@audius/libs": "^1.0.1",
+    "@audius/stems": "^0.2.6",
     "@auth0/nextjs-auth0": "^0.11.0",
     "@chakra-ui/core": "^0.7.0",
     "@emotion/core": "^10.0.28",

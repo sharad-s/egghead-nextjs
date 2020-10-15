@@ -9,6 +9,8 @@ import {
 } from "../utils/api"
 
 import {
+    getUserByAudiusHandle,
+    getUserByAudiusId,
     resolveProfileURL
 } from "../utils/audiusApi"
 
@@ -18,39 +20,55 @@ export const createUser = async (client, userObj) => {
 
     console.log(`Creating user...`)
 
+    // TODO: fix weird redirect issue with this resolve
+    // resolve the Audius URL against Audius to get their data
+    await resolveProfileURL(userObj.audiusURL)
+
+    // Merge mock data with form input data 
+    // Coerce User data using the model
     const userModel = new UserModel({
         ...mockUser,
         ...userObj
     });
 
-    // Query Audius API to resolve the user (just to test)
-    await resolveProfileURL(userObj.audiusURL)
-
-    // Get just the data we're pushing to Textile
+    // Get just the data we're pushing to Textile from the model
     const textileData = userModel.getTextileData();
-    // const userData = userModel.getData();
-    // const audiusData = userModel.getAudiusData();
-    console.log({ textileData })
 
     // Push the User Textile document to Users Collection
     const result = await addDocument(client, COLLECTION_NAME, textileData)
-x
+
     console.log('Created user! 👍', { result })
 };
 
 export const getUsers = async (client) => {
     console.log(`Getting all users...`)
-    const documents = await fetchCollection(client, COLLECTION_NAME)
+    const usersTextile = await fetchCollection(client, COLLECTION_NAME)
     console.log(`Got all users!👌`)
-    return documents
+    return usersTextile
 }
 
 export const getUserById = async (client, userId) => {
     try {
         console.log(`fetching user ${userId}`)
+
+        // Get textile data for the user
         const userTextile = await findDocument(client, COLLECTION_NAME, userId)
-        console.log(`Got user ${userId}😎`, {userTextile})
-        return userTextile
+
+        // Using the audiusID, get the user from Audius
+        const userAudius = await getUserByAudiusId(userTextile.audiusId)
+        const { name, cover_photo, profile_picture } = userAudius;
+
+        // Stitch textile and Audius Data
+        const user = new UserModel({
+            ...userTextile,
+            name,
+            background: cover_photo['2000x'],
+            profilePicture: profile_picture['1000x1000']
+        }).getData()
+
+        console.log(`Got user ${userId} 😎`, { user })
+        return user
+
     } catch (err) {
         throw new Error(err)
     }

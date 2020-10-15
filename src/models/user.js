@@ -32,9 +32,9 @@ export const PROP_TYPES = {
     name: {
         type: 'string',
     },
-    email: {
-        type: 'string',
-    },
+    // email: {
+    //     type: 'string',
+    // },
     background: {
         type: 'string',
     },
@@ -56,7 +56,7 @@ const TEXTILE_FIELDS = [
 
 const AUDIUS_FIELDS = [
     'name',
-    'email',
+    // 'email',
     'background',
     'profilePicture'
 ]

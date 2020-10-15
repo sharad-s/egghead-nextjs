@@ -28,7 +28,10 @@ const TextilePage = () => {
 
     // user input
     const [user, setUser] = useState({
-        audiusURL: 'https://audius.co/poopyguy'
+        audiusURL: 'https://audius.co/poopyguy',
+        // This audiusID will not be sent in the form.
+        // Eventually it will be resolved by the Audius resolve endpoint
+        audiusId: 'n0r46'
     })
     const [loading, setLoading] = useState(false)
 
