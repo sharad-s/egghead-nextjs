@@ -36,10 +36,7 @@ export const getOrCreateCollection = async (
         return collection
     } catch {
         await client.newCollection(threadID, { name: collectionName });
-    } finally {
-        let collection = await client.getCollectionInfo(threadID, collectionName)
-        return collection
-    }
+    } 
 
 }
 

@@ -8,6 +8,10 @@ import {
     fetchCollection
 } from "../utils/api"
 
+import {
+    resolveProfileURL
+} from "../utils/audiusApi"
+
 const COLLECTION_NAME = "Users"
 
 export const createUser = async (client, userObj) => {
@@ -19,14 +23,19 @@ export const createUser = async (client, userObj) => {
         ...userObj
     });
 
+    // Query Audius API to resolve the user (just to test)
+    await resolveProfileURL(userObj.audiusURL)
+
+    // Get just the data we're pushing to Textile
+    const textileData = userModel.getTextileData();
     // const userData = userModel.getData();
     // const audiusData = userModel.getAudiusData();
-    const textileData = userModel.getTextileData();
     console.log({ textileData })
 
+    // Push the User Textile document to Users Collection
     const result = await addDocument(client, COLLECTION_NAME, textileData)
-
-    console.log({ result })
+x
+    console.log('Created user! 👍', { result })
 };
 
 export const getUsers = async (client) => {

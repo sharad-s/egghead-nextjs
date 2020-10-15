@@ -28,14 +28,16 @@ const TextilePage = () => {
 
     // user input
     const [user, setUser] = useState({
-        audiusId: 'poop'
+        audiusURL: 'https://audius.co/poopyguy'
     })
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         setup({ newIdentity: false })
     }, [])
 
     const setup = async ({ newIdentity = false }) => {
+        setLoading(true)
         const [
             client,
         ] = await loginAndSetupDB({ newIdentity })
@@ -46,26 +48,34 @@ const TextilePage = () => {
         const users = await getUsers(client)
         console.log({ users })
         setDocuments(users)
+        setLoading(false)
     }
 
     const handleAddDocument = async (e) => {
         e.preventDefault()
-        await createUser(client, user)
-        const users = await getUsers(client)
-        setDocuments(users)
+        try {
+            setLoading(true)
+            await createUser(client, user)
+            const users = await getUsers(client)
+            setDocuments(users)
+            setLoading(false)
+        } catch (err) {
+            console.error(err)
+        }
     }
 
     const handleDelete = async (e, document) => {
         e.preventDefault()
         try {
+            setLoading(true)
             await deleteUser(client, document._id)
             const users = await getUsers(client)
             setDocuments(users)
+            setLoading(false)
         } catch (err) {
             console.error(err)
         }
-   
-        }
+    }
 
     const handleFormUpdate = async ({ target: { name, value } }) => {
         const newUser = {
@@ -91,6 +101,7 @@ const TextilePage = () => {
 
             </>
         ));
+
 
     return (
         <Box width="100%">
@@ -133,18 +144,16 @@ const TextilePage = () => {
                         </Heading>
                         <Flex flexDirection="column">
                             <h2> Audius ID </h2>
-                            <input name="audiusId" value={user.audiusId} onChange={handleFormUpdate} />
+                            <input name="audiusURL" value={user.audiusURL} onChange={handleFormUpdate} />
                             <Button onClick={handleAddDocument}>
                                 Add a User Document
                             </Button>
                         </Flex>
 
                         <br />
-                        {renderedDocuments}
+                        {loading ? <p>Loading...</p> : renderedDocuments}
                     </Box>
                 </Flex>
-
-
             </Flex>
         </Box >
     );

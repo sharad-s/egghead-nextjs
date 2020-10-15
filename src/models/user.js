@@ -10,6 +10,9 @@ export const PROP_TYPES = {
     audiusId: {
         type: 'string',
     },
+    audiusURL: {
+        type: 'string',
+    },
     catalogTextile: {
         type: 'array',
     },
@@ -43,6 +46,7 @@ export const PROP_TYPES = {
 const TEXTILE_FIELDS = [
     'id',
     'audiusId',
+    'audiusURL',
     'catalogTextile',
     'catalogAudius',
     'collectionTextile',

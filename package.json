@@ -15,6 +15,7 @@
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "@textile/hub": "^1.1.0",
+    "axios": "^0.20.0",
     "dotenv": "^8.2.0",
     "emotion-theming": "^10.0.27",
     "next": "^9.3.2",
