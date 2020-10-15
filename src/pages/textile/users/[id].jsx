@@ -54,20 +54,20 @@ const TextilePage = () => {
 
             // Get textile items by user audius ID
             textileGetItemsByUserAudiusId(client, user.audiusId)
-            .then(items => {
-                setItemsInYourName(items)
-            })
-            .catch(console.error)
-            
+                .then(items => {
+                    setItemsInYourName(items)
+                })
+                .catch(console.error)
+
         }
     }, [user])
 
-    
+
 
     const setup = async () => {
         const [
             client,
-        ] = await loginAndSetupDB({ newIdentity : false })
+        ] = await loginAndSetupDB({ newIdentity: false })
         setClient(client)
 
         // Setup users docs
@@ -77,7 +77,7 @@ const TextilePage = () => {
         } catch (err) { console.error(err) }
     }
 
-    const handleAddToCatalog = async (e, audiusUpload ) => {
+    const handleAddToCatalog = async (e, audiusUpload) => {
         e.preventDefault()
         // Update user
         try {
@@ -94,23 +94,24 @@ const TextilePage = () => {
         setItemsInYourName(items)
     }
     const renderedAudiusUploads = !!audiusUploads && audiusUploads.map((audiusUpload) => (
-        <>  
+        <li key={audiusUpload.id}>
             <p> {audiusUpload.id}- {audiusUpload.title}</p>
             <Button onClick={e => handleAddToCatalog(e, audiusUpload)}>Add to Catalog</Button>
-        </>
+        </li>
     ))
-
 
 
     const renderedItems = !!itemsInYourName && itemsInYourName.map((item) => (
-        <>
-        <p> {JSON.stringify(item)}</p>
-        <Button onClick={e => handleDeleteItem(e, item)}>Delete from 'Items'</Button>
-        </>
+        <li key={item._id}>
+            <p> {JSON.stringify(item)}</p>
+            <Button onClick={e => handleDeleteItem(e, item)}>Delete from 'Items'</Button>
+        </li>
     ))
 
     const renderedCatalog = !!catalog && catalog.map((c) => (
-        <p> {JSON.stringify(c)}</p>
+        <li key={c._id}>
+            <p> {JSON.stringify(c)}</p>
+        </li>
     ))
 
     return (
@@ -161,6 +162,7 @@ const TextilePage = () => {
                         <Heading as="h5" size="xl" marginY="2rem">
                             Your Uploads
                         </Heading>
+                        <p> These are your Audius Uploads, and should update any time the user with this audiusId uploads a new Track</p>
                         {renderedAudiusUploads}
                     </Box>
 
@@ -168,6 +170,9 @@ const TextilePage = () => {
                         <Heading as="h5" size="xl" marginY="2rem">
                             Items from 'Items' in your name
                         </Heading>
+                        <p>These are the DB entries in 'Items' for any items that have your audiusId attached to them</p>
+                        <p>This will not be client-facing. Only your Catalog will be. You will never add or delete an item directly as a user.</p>
+                        <p>However, this interface will give you an easy way to delete your 'Items' if any issues arise.</p>
                         {renderedItems}
                     </Box>
 
@@ -175,6 +180,9 @@ const TextilePage = () => {
                         <Heading as="h5" size="xl" marginY="2rem">
                             Your Catalog
                         </Heading>
+                        <p>This is your Catalog. AKA songs that are hosted on Audius that you can choose to sell on Catalog app.</p>
+                        <p>If you delete the song on Audius, it will not be automatically deleted from Catalog. </p>
+                        <p> If you remove the song from your Catalog, it will be removed from 'Items' collection, but it will not be deleted from your Audius uploads.</p>
                         {renderedCatalog}
                     </Box>
 
