@@ -1,63 +1,76 @@
-/*
-id	ID	Yes
-name	String	Yes
-email	String	Yes
-catalog	[Item]	No
-collection	[Item]	No
-background	Background	No
-links	[Link]	No
-*/
+import BaseModel from './Base';
 
+export const PROP_TYPES = {
+    // Textile Schema
 
-const userSchema = {
-    "$schema": "http://json-schema.org/draft-06/schema#",
-    "$ref": "#/definitions/User",
-    "definitions": {
-        "User": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "ethereumPublicKey": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "background": {
-                    "$ref": "#/definitions/Background"
-                }
-            },
-            "required": [
-                "background",
-                "email",
-                "ethereumPublicKey",
-                "name"
-            ],
-            "title": "User"
-        },
-        "Background": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                },
-                "source": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "id",
-                "source",
-                "type"
-            ],
-            "title": "Background"
-        }
+    // Not needed because textile autogenerates `_id`
+    // id: {
+    //     type: 'string',
+    // },
+    audiusId: {
+        type: 'string',
+    },
+    catalogTextile: {
+        type: 'array',
+    },
+    catalogAudius: {
+        type: 'array',
+    },
+    collectionTextile: {
+        type: 'array',
+    },
+    collectionAudius: {
+        type: 'array',
+    },
+    links: {
+        type: 'array'
+    },
+    //   Audius Additional Schema
+    name: {
+        type: 'string',
+    },
+    email: {
+        type: 'string',
+    },
+    background: {
+        type: 'string',
+    },
+    profilePicture: {
+        type: 'string',
+    }
+};
+
+const TEXTILE_FIELDS = [
+    'id',
+    'audiusId',
+    'catalogTextile',
+    'catalogAudius',
+    'collectionTextile',
+    'collectionAudius',
+    'links'
+]
+
+const AUDIUS_FIELDS = [
+    'name',
+    'email',
+    'background',
+    'profilePicture'
+]
+
+/**
+ * Schema Ref: User
+ * @class
+ */
+export default class User extends BaseModel {
+    constructor(props) {
+        super(props, PROP_TYPES);
+    }
+
+    getTextileData() {
+        return this.getDataSubset(TEXTILE_FIELDS)
+    }
+
+    getAudiusData() {
+        return this.getDataSubset(AUDIUS_FIELDS)
     }
 }

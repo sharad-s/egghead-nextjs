@@ -6,6 +6,7 @@ import {
 
 import { KEY_INFO } from './constants'
 
+
 // Get UserAuth instance using KeyInfo
 export const getUserAuth = async () => {
     // Create an expiration and create a signature. 60s or less is recommended.

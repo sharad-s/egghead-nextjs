@@ -1,26 +1,25 @@
-import {  Client } from '@textile/hub';
+import { Client } from '@textile/hub';
 
 // Utils
-import { getThread, fetchCollections} from "./db";
+import { getThread, fetchCollections, getOrCreateCollection } from "./db";
 import { getIdentity, createIdentity, getUserAuth, newToken } from "./auth"
 
 /*
  * Main Setup function
  * If newIdentity is true, it will set up with a brand new identity, instead of try to look for cached identity
  */
-export const loginAndSetupDB = async ({newIdentity = false}) => {
-    
+export const loginAndSetupDB = async ({ newIdentity = false }) => {
+    console.log("Setting up...")
+
     // Get PrivateKey
     const privateKey = newIdentity ? await createIdentity() : await getIdentity();
 
     // Instantiate Client with PrivateKey
     const client = await getClient(privateKey);
 
-    // Get current DB (thread)
-    const thread = await getThread()
+    const [thread, collections] = await setupDB(client)
 
-    // Get All Collections
-    const collections = await fetchCollections(client)
+    console.log("Set up!")
 
     return [client, privateKey, thread, collections];
 }
@@ -43,4 +42,20 @@ const getClient = async (privateKey) => {
     // Finally, return the client instance used to query the database
     return client;
 
+}
+
+// Instantiates DB, sets up the collections, and returns collections
+const setupDB = async (client) => {
+    // Get current DB (thread)
+    const thread = await getThread()
+
+    // Makes sure all collections exist, if not then create them
+    await getOrCreateCollection(client, "Users")
+    await getOrCreateCollection(client, "Items")
+    await getOrCreateCollection(client, "Purchases")
+
+    // Get All Collections
+    const collections = await fetchCollections(client)
+
+    return [thread, collections]
 }

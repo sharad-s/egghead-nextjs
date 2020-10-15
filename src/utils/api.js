@@ -15,17 +15,41 @@ export const fetchCollection = async (client, collectionName) => {
 }
 
 // Adds a single Document to a collection
-export const addDocument = async (client, collectionName) => {
-    const document = genFakeData()
+export const addDocument = async (
+    client,
+    collectionName,
+    document = genFakeData()
+) => {
     const threadID = ThreadID.fromString(THREAD_ID)
-    await client.create(threadID, collectionName, [document])
-    return document
+    return await client.create(threadID, collectionName, [document])
+    // return document
+}
+
+// Gets a single Document to a collection
+export const findDocument = async (
+    client,
+    collectionName,
+    documentID
+) => {
+    const threadID = ThreadID.fromString(THREAD_ID)
+    return await client.findByID(threadID, collectionName, documentID)
+}
+
+// Deletes a single Document from a collection
+export const removeDocument = async (
+    client,
+    collectionName,
+    documentID
+) => {
+    console.log({collectionName, documentID})
+    const threadID = ThreadID.fromString(THREAD_ID)
+    return await client.delete(threadID, collectionName, [documentID])
 }
 
 const genFakeData = () => {
     return {
-      id: Math.floor(Math.random() * 100),
-      slug: Math.random().toString(36).substring(10),
-      name: Math.random().toString(36).substring(15)
+        id: Math.floor(Math.random() * 100),
+        slug: Math.random().toString(36).substring(10),
+        name: Math.random().toString(36).substring(15)
     }
-  }
+}

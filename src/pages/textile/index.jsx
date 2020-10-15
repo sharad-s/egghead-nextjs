@@ -19,6 +19,11 @@ import {
     addDocument,
 } from '../../utils/api'
 
+// Services
+import {
+    createUser
+} from "../../services/users"
+
 const TextilePage = () => {
 
     const [privKey, setPrivKey] = useState('')
@@ -53,6 +58,7 @@ const TextilePage = () => {
         setClient(client)
         setThread(thread)
         setCollections(collections)
+
     }
 
     // Sets the current collection and reads the documents from it
@@ -67,7 +73,7 @@ const TextilePage = () => {
     }
 
     const handleAddDocument = async (e, collectionName) => {
-        await addDocument(client, collectionName, document)
+        await createUser(client)
         const documents = await fetchCollection(client, collectionName)
         setDocuments(documents)
     }
@@ -104,10 +110,16 @@ const TextilePage = () => {
         ));
 
     return (
-        <Box>
-            <Flex margin="1rem" justifyContent="flex-end">
-                <NextLink href="/" passHref>
+        <Box width="100%">
+            <Flex margin="1rem" justifyContent="space-around">
+            <NextLink href="/" passHref>
                     <Link>Home</Link>
+                </NextLink>
+                <NextLink href="/textile" passHref>
+                    <Link>Threads Demo</Link>
+                </NextLink>
+                <NextLink href="/textile/users" passHref>
+                    <Link>Users</Link>
                 </NextLink>
             </Flex>
 
@@ -182,7 +194,7 @@ const TextilePage = () => {
                                     Collection: {selectedCollection}
                                 </Heading>
                                 <Button onClick={(e) => handleAddDocument(e, selectedCollection)}>
-                                    Add a Document
+                                    Add a User Document
                  </Button>
                             </>
                         )}

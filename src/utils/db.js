@@ -24,30 +24,21 @@ export const fetchCollections = async (client) => {
 }
 
 // Creates a collection in DB if it doesn't exist 
-const createCollectionInDB = async (
+export const getOrCreateCollection = async (
     client,
-    threadID,
-    collectionName = "poopCollection"
+    collectionName = "DEFAULT_COLLECTION"
 ) => {
+
+    const threadID = ThreadID.fromString(THREAD_ID)
+
     try {
-
-        let collections = await client.listCollections(threadID)
-
-        const hasCollection = !!Object.keys(
-            collections.filter(({ name }) => name === collectionName)
-        ).length
-
-        // If Collection doesn't exist, create it
-        if (!hasCollection) await client.newCollection(threadID, { name: collectionName });
-
-        // Query it again
-        collections = await client.listCollections(threadID)
-
-        console.log({ collections })
-
-        return collections
-    } catch (err) {
-        console.error(err)
+        let collection = await client.getCollectionInfo(threadID, collectionName)
+        return collection
+    } catch {
+        await client.newCollection(threadID, { name: collectionName });
+    } finally {
+        let collection = await client.getCollectionInfo(threadID, collectionName)
+        return collection
     }
 
 }
@@ -57,6 +48,5 @@ const createCollectionInDB = async (
 export const createDB = async (client) => {
     const thread = await client.newDB(undefined, 'NEW_DB')
     return thread
-  }
-  
-  
+}
+
