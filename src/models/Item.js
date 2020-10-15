@@ -2,7 +2,6 @@ import BaseModel from './Base';
 
 export const PROP_TYPES = {
     // Textile Schema
-
     // Not needed because textile autogenerates `_id`
     // id: {
     //     type: 'string',
@@ -10,62 +9,49 @@ export const PROP_TYPES = {
     audiusId: {
         type: 'string',
     },
-    audiusURL: {
-        type: 'string',
+    artist: {
+        type: 'object',
+        // { textileId: string, audiusId: string }
     },
-    catalog: {
+    price: {
+        type: 'number'
+    },
+    purchasedBy: {
         type: 'array',
-        // Object type: Item
         // { textileID: 'string', audiusId: 'string' }
-    },
-    collection: {
-        type: 'array',
-        // Object type: Item
-        // { textileID: 'string', audiusId: 'string' }
-    },
-    links: {
-        type: 'array'
-    },
+    },  
     //   Audius Additional Schema - not stored in Textile
-    name: {
+    title: {
         type: 'string',
     },
-    // email: {
-    //     type: 'string',
-    // },
+    description: {
+        type: 'string',
+    },
     background: {
         type: 'string',
     },
-    profilePicture: {
-        type: 'string',
-    },
-    audiusUploads: {
-        type: 'array'
-        // {id, title}
-    }
 };
 
 const TEXTILE_FIELDS = [
     'id',
     'audiusId',
-    'audiusURL',
-    'catalog',
-    'collection',
-    'links'
+    'artist',
+    'price',
+    'purchasedBy',
 ]
 
 const AUDIUS_FIELDS = [
-    'name',
-    // 'email',
+    'title',
+    'description',
     'background',
-    'profilePicture'
+    'source'
 ]
 
 /**
- * Schema Ref: User
+ * Schema Ref: Item
  * @class
  */
-export default class User extends BaseModel {
+export default class Item extends BaseModel {
     constructor(props) {
         super(props, PROP_TYPES);
     }

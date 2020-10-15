@@ -29,10 +29,9 @@ const TextilePage = () => {
     // user input
     const [user, setUser] = useState({
         audiusURL: 'https://audius.co/poopyguy',
-        // This audiusID will not be sent in the form.
-        // Eventually it will be resolved by the Audius resolve endpoint
-        audiusId: 'n0r46'
+        // audiusId: 'n0r46'
     })
+
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
@@ -92,7 +91,7 @@ const TextilePage = () => {
         ? (<p>No Documents...</p>)
         : documents.map(document => (
             <>
-                <li>
+                <li key={document._id}>
                     <NextLink href={`/textile/users/${document._id}`} passHref>
                         <Link>
                             {JSON.stringify(document)}

@@ -9,7 +9,7 @@ import { getIdentity, createIdentity, getUserAuth, newToken } from "./auth"
  * If newIdentity is true, it will set up with a brand new identity, instead of try to look for cached identity
  */
 export const loginAndSetupDB = async ({ newIdentity = false }) => {
-    console.log("Setting up...")
+    console.log("📲 Setting up...")
 
     // Get PrivateKey
     const privateKey = newIdentity ? await createIdentity() : await getIdentity();
@@ -19,7 +19,7 @@ export const loginAndSetupDB = async ({ newIdentity = false }) => {
 
     const [thread, collections] = await setupDB(client)
 
-    console.log("Set up!")
+    console.log("📲✅ Set up!")
 
     return [client, privateKey, thread, collections];
 }

@@ -1,21 +1,25 @@
 export default {
     id: 'textile_id',
     audiusId: 'audius_id',
-    catalogTextile: [
-        'textile_item_id_1',
-        'textile_item_id_2',
+    catalog: [
+        {
+            textileId: 'textile_item_id_1',
+            audiusId: 'audius_item_id_1'
+        },
+        {
+            textileId: 'textile_item_id_2',
+            audiusId: 'audius_item_id_2'
+        }
     ],
-    catalogAudius: [
-        'audius_item_id_1',
-        'audius_item_id_2',
-    ],
-    collectionTextile: [
-        'textile_item_id_5',
-        'textile_item_id_6',
-    ],
-    collectionAudius: [
-        'audius_item_id_5',
-        'audius_item_id_6',
+    collection: [
+        {
+            textileId: 'textile_item_id_1',
+            audiusId: 'audius_item_id_1'
+        },
+        {
+            textileId: 'textile_item_id_2',
+            audiusId: 'audius_item_id_2'
+        }
     ],
     links: [
         'www.google.com',
