@@ -4,7 +4,7 @@ import {
     createUserAuth
 } from '@textile/hub';
 
-import { KEY_INFO } from './constants'
+import { KEY_INFO } from '../constants/textile'
 
 
 // Get UserAuth instance using KeyInfo

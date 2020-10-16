@@ -1,6 +1,6 @@
 // Textile API 
 
-import { THREAD_ID } from './constants'
+import { THREAD_ID } from '../constants/textile'
 
 import {
     ThreadID
