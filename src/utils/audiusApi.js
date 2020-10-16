@@ -5,7 +5,7 @@ BASE_URL = 'https://discoveryprovider.mumbaudius.com'
 let CORS_PROXY = 'https://cors-anywhere.herokuapp.com'
 
 // Doesn't work rn
-export const resolveProfileURL = async (url) => {
+export const audiusResolveProfileURL = async (url) => {
     let path = `${CORS_PROXY}/${BASE_URL}/v1/resolve?url=${url}` 
     //  path = `${BASE_URL}/v1/resolve?url=${url}` 
 
@@ -45,7 +45,7 @@ export const getUserByAudiusHandle = async (audiusHandle) => {
 
 }
 
-export const getUserByAudiusId = async (audiusId) => {
+export const audiusGetUserByAudiusId = async (audiusId) => {
     const path = `${BASE_URL}/v1/users/${audiusId}`
 
     try {
@@ -66,7 +66,7 @@ export const getUserByAudiusId = async (audiusId) => {
     }
 }
 
-export const getUserUploads = async (audiusId) => {
+export const audiusGetUserUploads = async (audiusId) => {
     const path = `${BASE_URL}/v1/users/${audiusId}/tracks`
 
     try {
@@ -88,7 +88,7 @@ export const getUserUploads = async (audiusId) => {
 }
 
 
-export const getTrackByAudiusId = async (audiusId) => {
+export const audiusGetTrackByAudiusId = async (audiusId) => {
     const path = `${BASE_URL}/v1/tracks/${audiusId}`
 
     try {

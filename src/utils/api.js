@@ -1,4 +1,4 @@
-
+// Textile API 
 
 import { THREAD_ID } from './constants'
 
@@ -76,7 +76,7 @@ export const makeQuery = async (
     console.log(`🧵 Making query ${query} on ${collectionName}...`)
     const threadID = ThreadID.fromString(THREAD_ID)
     const res = await client.find(threadID, collectionName, query)
-    console.log('🧵✅ Query Succeeded!', { res })
+    // console.log('🧵✅ Query Succeeded!', { res })
     return res
 }
 

@@ -1,6 +1,6 @@
 
 import { 
-    findUserByAudiusId as textileFindUserByAudiusId,
+    textileFindUserByAudiusId,
     updateUser
 } from './users'
 
@@ -19,24 +19,29 @@ import {
     addDocument,
     removeDocument
 } from "../utils/api"
-import { getTrackByAudiusId as audiusGetTrackByAudiusId } from '../utils/audiusApi'
 
 
 const ITEMS_COLLECTION = "Items"
-
-export const addTrackToCatalog = async (client, audiusTextileItem) => {
+/*  
+ * Adds a track to a User's Catalog.
+ * @param client: Client
+ * @param audiusTextileItem : { full audius data for a track }
+ * @notes
+ *  1.) Find the Textile document of the User that matches track's `artist.audiusId`    
+ *  2.) Construct the `Item` object by merging audius-provided data and textile-provided Data
+ *  3.) Validate that User doesn't already have this Item in their Catalog
+ *  4.) Validate that this item doesn't already exist in 'Items' collection
+ *  5.) Create the Item in textile 'Items' collection
+ *  6.) Use the item._id returned from #5 to update the User document of the track's artist with the updated catalog.
+ */
+export const addTrackToCatalog = async (client, audiusTrack) => {
     try {
         /** PREP STUFF **/
         /****************/
 
         const t0 = performance.now()
-
-        const { id: audiusId, title } = audiusTextileItem
+        const { id: audiusId, title } = audiusTrack
         console.log('💽 Adding track to catalog...', { audiusId, title })
-
-        // Get full info for audius Track
-        const audiusTrack = audiusTextileItem
-        // const audi   usTrack = await getTrackByAudiusId(audiusId) //Not needed if `audiusTextileItem` has the full data from Audius
 
         /** CONSTRUCT DATA MODEL **/
         /**************************/
@@ -55,7 +60,7 @@ export const addTrackToCatalog = async (client, audiusTextileItem) => {
             // Textile Data
             audiusId,
             artist,
-            // price,
+            // price : formData.price,
             purchasedBy: [],
             // Audius Only data
             title: audiusTrack.title,
@@ -66,6 +71,8 @@ export const addTrackToCatalog = async (client, audiusTextileItem) => {
         /** VALIDATION **/
 
         // If User already has this song in their Catalog, throw
+        console.log({textileUser})
+
         let foundTrack = textileUser.catalog.find((Item) => Item.audiusId === audiusTrack.id)
         if (!!foundTrack) {
             throw new Error('Track is already in this Users Catalog.')
@@ -92,7 +99,7 @@ export const addTrackToCatalog = async (client, audiusTextileItem) => {
             // Add the returned `textileId` to the Textile 'Item' document we are creating in the User's catalog.
             textileItem = {
                 ...textileItem,
-                textileId
+                textileId,
             }
 
             // Construct the User object with the updated catalog
@@ -159,7 +166,7 @@ export const textileFindItemByAudiusId = async (client, audiusId) => {
     }
 }
 
-// Gets items in the "Items" collection that match the user's audiusId
+// Gets Textile Items in the "Items" collection that match the user's audiusId
 export const textileGetItemsByUserAudiusId = async (client, userAudiusId) => {
     try {
         console.log(`💽 Querying item in ${ITEMS_COLLECTION} by User Audius Id ${userAudiusId} ...`)

@@ -58,11 +58,8 @@ const TextilePage = () => {
                     setItemsInYourName(items)
                 })
                 .catch(console.error)
-
         }
     }, [user])
-
-
 
     const setup = async () => {
         const [

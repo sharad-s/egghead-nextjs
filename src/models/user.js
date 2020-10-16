@@ -2,11 +2,6 @@ import BaseModel from './Base';
 
 export const PROP_TYPES = {
     // Textile Schema
-
-    // Not needed because textile autogenerates `_id`
-    // id: {
-    //     type: 'string',
-    // },
     audiusId: {
         type: 'string',
     },
@@ -30,23 +25,15 @@ export const PROP_TYPES = {
     name: {
         type: 'string',
     },
-    // email: {
-    //     type: 'string',
-    // },
     background: {
         type: 'string',
     },
     profilePicture: {
         type: 'string',
     },
-    audiusUploads: {
-        type: 'array'
-        // {id, title}
-    }
 };
 
 const TEXTILE_FIELDS = [
-    'id',
     'audiusId',
     'audiusURL',
     'catalog',
